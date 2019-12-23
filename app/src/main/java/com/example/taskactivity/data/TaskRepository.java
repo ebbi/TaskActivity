@@ -10,8 +10,7 @@ public class TaskRepository {
 
     private static TaskRepository sTodoRepository;
 
-    private ArrayList<Task> mTasks = new ArrayList<>();
-    private Task mTask;
+    private final ArrayList<Task> mTasks = new ArrayList<>();
 
     public static TaskRepository getInstance() {
         if (sTodoRepository == null) {
@@ -26,7 +25,7 @@ public class TaskRepository {
 
     private void initTestData() {
 
-        for (int i=0; i < 3; i++){
+        for (int i=0; i < 5; i++){
             Task task = new Task(i,"Test title " + i,"Test description " + i,
                     "To be set!");
             mTasks.add(task);
@@ -36,15 +35,14 @@ public class TaskRepository {
     public Task getNextTask(Task task) {
 
         int currentTaskId = task.getId();
-        int nextTaskId = currentTaskId;
+        int nextTaskId = 0;
 
         if (currentTaskId < mTasks.size() - 1){
-            nextTaskId += 1;
-        } else  if (currentTaskId > mTasks.size() - 1){
-            nextTaskId = 0;
+            nextTaskId = currentTaskId + 1;
+        } else  if (currentTaskId == mTasks.size() - 1){
+            nextTaskId = currentTaskId;
         } else {
-            Log.d(TAG, "getNextTask: currentTaskId out of bound!");
-            nextTaskId = 0;
+            Log.d(TAG, "getNextTask: currentTaskId out of bound, reset to 0!");
         }
 
         return mTasks.get(nextTaskId);
@@ -57,5 +55,9 @@ public class TaskRepository {
 
     public Task getFirstTask() {
         return mTasks.get(0);
+    }
+
+    public Task getTask(int taskId) {
+        return mTasks.get(taskId);
     }
 }
